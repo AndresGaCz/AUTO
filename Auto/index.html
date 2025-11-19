@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Rover Control</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <h3>IOT ROVER CONTROL</h3>
+    <div id="connection-status" class="text-center mb-3 text-danger">🔴 Desconectado</div>
+
+    <ul class="nav nav-pills justify-content-center mb-4" id="pills-tab" role="tablist">
+        <li class="nav-item"><button class="nav-link active" id="tab-control" data-bs-toggle="pill" data-bs-target="#pills-control">Control</button></li>
+        <li class="nav-item"><button class="nav-link" id="tab-monitor" data-bs-toggle="pill" data-bs-target="#pills-monitor">Monitoreo</button></li>
+        <li class="nav-item"><button class="nav-link" id="tab-demos" data-bs-toggle="pill" data-bs-target="#pills-demos">Demos</button></li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+        
+        <div class="tab-pane fade show active" id="pills-control">
+            <div class="control-pad">
+                <button class="btn btn-control" onclick="enviarComando('IZQ_ADELANTE')">↖️</button>
+                <button class="btn btn-control" onclick="enviarComando('ADELANTE')">⬆️</button>
+                <button class="btn btn-control" onclick="enviarComando('DER_ADELANTE')">↗️</button>
+                <button class="btn btn-control" onclick="enviarComando('IZQUIERDA')">⬅️</button>
+                <button class="btn btn-control btn-stop" onclick="enviarComando('STOP')">STOP</button>
+                <button class="btn btn-control" onclick="enviarComando('DERECHA')">➡️</button>
+                <button class="btn btn-control" onclick="enviarComando('GIRAR_360_IZQ')">🔄</button>
+                <button class="btn btn-control" onclick="enviarComando('ATRAS')">⬇️</button>
+                <button class="btn btn-control" onclick="enviarComando('GIRAR_360_DER')">🔃</button>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="pills-monitor">
+            <div class="status-box">
+                <h5>Modo de Operación</h5>
+                <div class="form-check form-switch d-flex justify-content-center gap-3">
+                    <label class="form-check-label">Manual</label>
+                    <input class="form-check-input" type="checkbox" id="modoSwitch" onchange="cambiarModo()">
+                    <label class="form-check-label">Automático</label>
+                </div>
+                <p id="modo-texto" class="mt-2 text-info">Estado: MANUAL</p>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="status-box">
+                        <h6>Último Comando</h6>
+                        <h4 id="last-cmd" style="color: #00d4ff;">STOP</h4>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="status-box">
+                        <h6>Distancia Obstáculo</h6>
+                        <h4 id="sensor-dist">-- cm</h4>
+                    </div>
+                </div>
+            </div>
+
+            <h6>Historial de Sistema</h6>
+            <div class="log-console" id="console-log">
+                <div>> Sistema iniciado... Esperando conexión.</div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="pills-demos">
+            
+            <div class="status-box mb-4" style="border: 1px solid #ff9800;">
+                <h5 class="text-warning">Grabadora de Secuencias</h5>
+                <div id="recorder-controls">
+                    <button class="btn btn-danger w-100 mb-2" onclick="iniciarGrabacion()" id="btn-rec">🔴 INICIAR GRABACIÓN</button>
+                </div>
+                <div id="save-controls" style="display:none;">
+                    <div class="text-success mb-2">● Grabando... (Ve a Control y mueve el robot)</div>
+                    <button class="btn btn-secondary w-100 mb-2" onclick="detenerGrabacion()">⏹ DETENER Y GUARDAR</button>
+                </div>
+                <small class="text-muted" id="rec-status">Estado: Esperando...</small>
+            </div>
+
+            <hr>
+
+            <h6>Demos Guardadas</h6>
+            <div class="d-grid gap-2" id="demos-list">
+                <button class="btn btn-outline-light p-3 demo-btn" onclick="ejecutarDemo('Baile Basico')">
+                    🕺 <strong>Baile Basico</strong>
+                </button>
+            </div>
+            
+            <div class="modal fade" id="nameModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark text-white">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title">Guardar Demo</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="demoNameInput" class="form-control" placeholder="Nombre de la secuencia...">
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-primary" onclick="confirmarGuardado()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
